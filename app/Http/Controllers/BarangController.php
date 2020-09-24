@@ -16,8 +16,9 @@ class BarangController extends Controller
     {
         // $barang = DB::table('m_barang')->get(); //query bulder
         // dd($barang);
-        $barang = Item::all(); //menggungakan kelas model
-        return view('barang.index', ['barang' => $barang]);
+        $barang = Item::all(); //menggunakan kelas model
+        // return view('barang.index', ['barang' => $barang]);
+        return view('barang.index', compact('barang')); //bisa pakai fungsi jika nama sama 
     }
 
     /**
@@ -27,7 +28,7 @@ class BarangController extends Controller
      */
     public function create()
     {
-        //
+        return view('barang.create');
     }
 
     /**
@@ -37,10 +38,45 @@ class BarangController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
-        //
-    }
+    {   
+        $request->validate([
+                'nama_barang' => 'required',
+                'harga_barang' => 'required|integer',
+                'tipe_barang' => 'required',
+                'warna_barang' => 'required',
+            ]);
 
+        // $barang = new Item;
+        // $barang->nama_barang = $request->nama;
+        // $barang->harga_barang = $request->harga;
+        // $barang->tipe_barang = $request->tipe;
+        // $barang->warna_barang = $request->warna;
+
+        // $barang->save();
+        
+        // Item::create([
+        //     'nama_barang' => $request->nama,
+        //     'harga_barang' => $request->harga,
+        //     'tipe_barang' => $request->tipe,
+        //     'warna_barang' => $request->warna
+        // ]);
+        
+        // dd($request->all());
+
+        Item::create($request->all());
+
+        return redirect('/barang')->with('status','Data barang sukses ditambahkan');
+    }
+    // public function messages()
+    // {
+    //     return [
+    //         'nama_barang.required' => 'Nama barang harus diisi',
+    //         'harga_barang.required' => 'Harga barang harus diisi',
+    //         'harga_barang.integer' => 'Harga barang harus berisi angka',
+    //         'tipe_barang.required' => 'Tipe barang harus diisi',
+    //         'warna_barang.required' => 'Warna barang harus diisi',
+    //     ];
+    // }
     /**
      * Display the specified resource.
      *
@@ -59,8 +95,13 @@ class BarangController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
-    {
-        //
+    {   
+
+        $barang = Item::find($id);
+        // echo $barang;
+        // $user = DB::table('items')->find('id_barang'->$id);
+        // echo $user;
+        return view('barang.edit', compact('barang'));
     }
 
     /**
@@ -82,7 +123,12 @@ class BarangController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
-    {
-        //
+    {   
+        
+        // $barang = new Item;
+        // $barang->id_barang 
+        Item::destroy($id);
+        // return $id;
+        return redirect('/barang')->with('status','Data barang sukses dihapus');
     }
 }

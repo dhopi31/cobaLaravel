@@ -27,5 +27,6 @@ class AppServiceProvider extends ServiceProvider
     {
         //
         Schema::defaultStringLength(255);
+        date_default_timezone_set('Asia/Jakarta');
     }
 }
